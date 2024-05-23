@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from .convkan import ConvKAN
+from .convkan import ConvKAN, FastConvKAN
 
 __all__ = (
     "Conv",
@@ -64,7 +64,7 @@ class ConvWithKAN(nn.Module):
     def __init__(self, c1, c2, k=1, s=1, p=None, g=1, d=1, act=True):
         """Initialize Conv layer with given arguments including activation."""
         super().__init__()
-        self.conv = ConvKAN(c1, c2, k, s, autopad(k, p, d), groups=g, dilation=d)
+        self.conv = FastConvKAN(c1, c2, k, s, autopad(k, p, d), groups=g, bias=False, dilation=d)
         self.bn = nn.BatchNorm2d(c2)
 
     def forward(self, x):
