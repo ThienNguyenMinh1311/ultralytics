@@ -136,7 +136,7 @@ class FastConvKAN(nn.Module):
                  base_activation = F.silu,
                  spline_weight_init_scale: float = 0.1, 
                  padding_mode: str = "zeros",
-                 kan_type: str = "BSpline",
+                 kan_type: str = "RBF",
                  ) -> None:
         
         super().__init__()
