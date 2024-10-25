@@ -19,7 +19,7 @@ def _custom_table(x, y, classes, title="Precision Recall Curve", x_title="Recall
     """
     Create and log a custom metric visualization to wandb.plot.pr_curve.
 
-    This function crafts a custom metric visualization that mimics the behavior of wandb's default precision-recall
+    This function crafts a custom metric visualization that mimics the behavior of the default wandb precision-recall
     curve while allowing for enhanced customization. The visual metric is useful for monitoring model performance across
     different classes.
 
@@ -109,7 +109,7 @@ def _log_plots(plots, step):
 
 def on_pretrain_routine_start(trainer):
     """Initiate and start project if module is present."""
-    wb.run or wb.init(project=trainer.args.project or "YOLOv8", name=trainer.args.name, config=vars(trainer.args))
+    wb.run or wb.init(project=trainer.args.project or "Ultralytics", name=trainer.args.name, config=vars(trainer.args))
 
 
 def on_fit_epoch_end(trainer):
@@ -137,17 +137,19 @@ def on_train_end(trainer):
     if trainer.best.exists():
         art.add_file(trainer.best)
         wb.run.log_artifact(art, aliases=["best"])
-    for curve_name, curve_values in zip(trainer.validator.metrics.curves, trainer.validator.metrics.curves_results):
-        x, y, x_title, y_title = curve_values
-        _plot_curve(
-            x,
-            y,
-            names=list(trainer.validator.metrics.names.values()),
-            id=f"curves/{curve_name}",
-            title=curve_name,
-            x_title=x_title,
-            y_title=y_title,
-        )
+    # Check if we actually have plots to save
+    if trainer.args.plots:
+        for curve_name, curve_values in zip(trainer.validator.metrics.curves, trainer.validator.metrics.curves_results):
+            x, y, x_title, y_title = curve_values
+            _plot_curve(
+                x,
+                y,
+                names=list(trainer.validator.metrics.names.values()),
+                id=f"curves/{curve_name}",
+                title=curve_name,
+                x_title=x_title,
+                y_title=y_title,
+            )
     wb.run.finish()  # required or run continues on dashboard
 
 
