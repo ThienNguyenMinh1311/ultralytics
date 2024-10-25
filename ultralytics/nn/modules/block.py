@@ -5,13 +5,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-<<<<<<< HEAD
 from .conv import Conv, DWConv, GhostConv, LightConv, RepConv, autopad, ConvWithKAN
-=======
 from ultralytics.utils.torch_utils import fuse_conv_and_bn
 
 from .conv import Conv, DWConv, GhostConv, LightConv, RepConv, autopad
->>>>>>> upstream/main
 from .transformer import TransformerBlock
 
 __all__ = (
