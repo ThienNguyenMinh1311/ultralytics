@@ -267,7 +267,14 @@ class C2f(nn.Module):
         y = list(self.cv1(x).split((self.c, self.c), 1))
         y.extend(m(y[-1]) for m in self.m)
         return self.cv2(torch.cat(y, 1))
-    
+
+class Silence(nn.Module):
+    def __init__(self, *args, **kwargs):
+        super(Silence, self).__init__()
+
+    def forward(self, x):
+        return x
+
 class C2fKAN(nn.Module):
     """Faster Implementation of CSP Bottleneck with 2 convolutions."""
 
